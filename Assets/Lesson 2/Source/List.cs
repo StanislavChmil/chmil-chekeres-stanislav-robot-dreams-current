@@ -26,7 +26,7 @@ public class List : MonoBehaviour
     [ContextMenu("Remove")]
     private void Remove()
     {
-        if (_list.Contains(_value))
+        if (_list.Remove(_value))
         {
             _list.Remove(_value);
             Debug.Log($"Removed: {_value}");
