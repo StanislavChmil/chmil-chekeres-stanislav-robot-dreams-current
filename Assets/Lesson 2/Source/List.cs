@@ -28,7 +28,6 @@ public class List : MonoBehaviour
     {
         if (_list.Remove(_value))
         {
-            _list.Remove(_value);
             Debug.Log($"Removed: {_value}");
         }
         else
