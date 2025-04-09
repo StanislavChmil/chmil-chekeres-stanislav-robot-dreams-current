@@ -17,7 +17,7 @@ MonoBehaviour:
   m_RendererType: 1
   m_RendererData: {fileID: 0}
   m_RendererDataList:
-  - {fileID: 11400000, guid: 453235b8ee4e5ec408d7ed682cb87047, type: 2}
+  - {fileID: 11400000, guid: 832e86ba34e0cd84fbac40bf1c73a444, type: 2}
   m_DefaultRendererIndex: 0
   m_RequireDepthTexture: 1
   m_RequireOpaqueTexture: 0
@@ -80,8 +80,8 @@ MonoBehaviour:
   m_ShadowAtlasResolution: 256
   m_VolumeFrameworkUpdateMode: 0
   m_Textures:
-    blueNoise64LTex: {fileID: 2800000, guid: e3d24661c1e055f45a7560c033dbb837, type: 3}
-    bayerMatrixTex: {fileID: 2800000, guid: f9ee4ed84c1d10c49aabb9b210b0fc44, type: 3}
+    blueNoise64LTex: {fileID: 0}
+    bayerMatrixTex: {fileID: 0}
   m_PrefilteringModeMainLightShadows: 1
   m_PrefilteringModeAdditionalLight: 4
   m_PrefilteringModeAdditionalLightShadows: 1
