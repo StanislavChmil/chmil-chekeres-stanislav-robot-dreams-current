@@ -13,6 +13,8 @@ public class Target : MonoBehaviour
     private Renderer[] renderers;
     private Collider[] colliders;
 
+    private HealthBar healthBar;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -21,12 +23,25 @@ public class Target : MonoBehaviour
 
         renderers = GetComponentsInChildren<Renderer>();
         colliders = GetComponentsInChildren<Collider>();
+
+        // Ищем компонент HealthBarUI в дочерних объектах
+        healthBar = GetComponentInChildren<HealthBar>();
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth, maxHealth);
+        }
     }
 
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
         Debug.Log("Урон: " + amount + ", осталось: " + currentHealth);
+
+        // Обновляем UI
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth, maxHealth);
+        }
 
         if (currentHealth <= 0f)
         {
@@ -48,6 +63,11 @@ public class Target : MonoBehaviour
     {
         foreach (var r in renderers) r.enabled = false;
         foreach (var c in colliders) c.enabled = false;
+
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(false);
+        }
     }
 
     void Respawn()
@@ -58,6 +78,12 @@ public class Target : MonoBehaviour
 
         foreach (var r in renderers) r.enabled = true;
         foreach (var c in colliders) c.enabled = true;
+
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(true);
+            healthBar.SetHealth(currentHealth, maxHealth);
+        }
 
         Debug.Log(gameObject.name + " возродился!");
     }
