@@ -5,6 +5,7 @@ public class Target : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float respawnTime = 3f;
+    public int scoreValue = 1; // 👈 Кол-во очков за уничтожение этой цели
 
     private float currentHealth;
     private Vector3 initialPosition;
@@ -24,7 +25,6 @@ public class Target : MonoBehaviour
         renderers = GetComponentsInChildren<Renderer>();
         colliders = GetComponentsInChildren<Collider>();
 
-        // Ищем компонент HealthBarUI в дочерних объектах
         healthBar = GetComponentInChildren<HealthBar>();
         if (healthBar != null)
         {
@@ -37,7 +37,6 @@ public class Target : MonoBehaviour
         currentHealth -= amount;
         Debug.Log("Урон: " + amount + ", осталось: " + currentHealth);
 
-        // Обновляем UI
         if (healthBar != null)
         {
             healthBar.SetHealth(currentHealth, maxHealth);
@@ -45,6 +44,13 @@ public class Target : MonoBehaviour
 
         if (currentHealth <= 0f)
         {
+            // 👉 Добавим очки
+            ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
+            if (scoreManager != null)
+            {
+                scoreManager.AddScore(scoreValue);
+            }
+
             StartCoroutine(RespawnRoutine());
         }
     }
