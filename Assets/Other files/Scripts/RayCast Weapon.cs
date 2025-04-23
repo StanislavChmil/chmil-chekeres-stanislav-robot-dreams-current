@@ -1,37 +1,45 @@
 using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 public class RayCastWeapon : MonoBehaviour
 {
     public float range = 100f;
-    public float damage = 10f;
-    public Transform muzzlePoint;
-
-    public GameObject muzzleFlashPrefab;
-    public GameObject explosionEffectPrefab;
-    public GameObject volumetricLaserPrefab; // Префаб с VolumetricLineBehavior
+    public float damage = 10f; // Обычный урон
+    public float explosionDamage = 50f; // Урон по ботам от взрыва
 
     public float explosionRadius = 8f;
     public float explosionForce = 1500f;
 
+    public Transform muzzlePoint;
+
+    public GameObject muzzleFlashPrefab;
+    public GameObject explosionEffectPrefab;
+    public GameObject volumetricLaserPrefab;
+
     private Camera mainCam;
+    private PlayerInputActions inputActions;
+
+    void Awake()
+    {
+        inputActions = new PlayerInputActions();
+
+        inputActions.Player.shoot.performed += ctx => FireRay();
+        inputActions.Player.Explosion.performed += ctx => FireExplosionRay();
+    }
+
+    void OnEnable()
+    {
+        inputActions.Enable();
+    }
+
+    void OnDisable()
+    {
+        inputActions.Disable();
+    }
 
     void Start()
     {
         mainCam = Camera.main;
-    }
-
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            FireRay();
-        }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            FireExplosionRay();
-        }
     }
 
     void FireRay()
@@ -57,7 +65,6 @@ public class RayCastWeapon : MonoBehaviour
             }
         }
 
-        // Визуальный объёмный лазер
         if (volumetricLaserPrefab != null)
         {
             GameObject laser = Instantiate(volumetricLaserPrefab);
@@ -92,6 +99,14 @@ public class RayCastWeapon : MonoBehaviour
             Collider[] colliders = Physics.OverlapSphere(explosionPoint, explosionRadius);
             foreach (Collider nearby in colliders)
             {
+                // Урон по боту
+                Target target = nearby.GetComponent<Target>();
+                if (target != null)
+                {
+                    target.TakeDamage(explosionDamage); // 👉 50 урона
+                }
+
+                // Физическое воздействие
                 Rigidbody rb = nearby.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
