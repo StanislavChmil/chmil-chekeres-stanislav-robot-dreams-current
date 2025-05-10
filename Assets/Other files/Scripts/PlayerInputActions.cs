@@ -71,6 +71,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BackToMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""22e57ffb-da92-457e-9dc0-c3f297fb03ff"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Explosion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""304b5293-64b8-4be4-bce3-92125a42ee93"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BackToMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_shoot = m_Player.FindAction("shoot", throwIfNotFound: true);
         m_Player_Explosion = m_Player.FindAction("Explosion", throwIfNotFound: true);
+        m_Player_BackToMenu = m_Player.FindAction("BackToMenu", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -256,6 +277,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_shoot;
     private readonly InputAction m_Player_Explosion;
+    private readonly InputAction m_Player_BackToMenu;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -265,6 +287,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @shoot => m_Wrapper.m_Player_shoot;
         public InputAction @Explosion => m_Wrapper.m_Player_Explosion;
+        public InputAction @BackToMenu => m_Wrapper.m_Player_BackToMenu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -289,6 +312,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Explosion.started += instance.OnExplosion;
             @Explosion.performed += instance.OnExplosion;
             @Explosion.canceled += instance.OnExplosion;
+            @BackToMenu.started += instance.OnBackToMenu;
+            @BackToMenu.performed += instance.OnBackToMenu;
+            @BackToMenu.canceled += instance.OnBackToMenu;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -308,6 +334,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Explosion.started -= instance.OnExplosion;
             @Explosion.performed -= instance.OnExplosion;
             @Explosion.canceled -= instance.OnExplosion;
+            @BackToMenu.started -= instance.OnBackToMenu;
+            @BackToMenu.performed -= instance.OnBackToMenu;
+            @BackToMenu.canceled -= instance.OnBackToMenu;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -332,5 +361,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnExplosion(InputAction.CallbackContext context);
+        void OnBackToMenu(InputAction.CallbackContext context);
     }
 }
